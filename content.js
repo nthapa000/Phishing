@@ -150,6 +150,40 @@ function analyzeUrlStructure(url) {
     }
 }
 
+// Function to create warning popup
+function createWarningPopup(url) {
+    const popup = document.createElement('div');
+    popup.className = 'warning-popup';
+    popup.innerHTML = `
+        <div class="warning-content">
+            <div class="warning-header">
+                <span class="warning-icon">⚠️</span>
+                <h3>Warning</h3>
+            </div>
+            <p>This website has been marked as potentially suspicious. Proceed with caution.</p>
+            <div class="warning-buttons">
+                <button class="continue-btn">Continue Anyway</button>
+                <button class="cancel-btn">Go Back</button>
+            </div>
+        </div>
+    `;
+    
+    // Add event listeners to buttons
+    const continueBtn = popup.querySelector('.continue-btn');
+    const cancelBtn = popup.querySelector('.cancel-btn');
+    
+    continueBtn.addEventListener('click', () => {
+        popup.remove();
+        window.location.href = url; // Navigate to the URL after confirmation
+    });
+    
+    cancelBtn.addEventListener('click', () => {
+        popup.remove();
+    });
+    
+    return popup;
+}
+
 // Function to create status chip
 function createStatusChip(isSuspicious) {
     const chip = document.createElement('span');
@@ -193,10 +227,27 @@ function addChipsToResults() {
                 // Create and add the chip
                 const chip = createStatusChip(isSuspicious);
                 link.parentNode.insertBefore(chip, link.nextSibling);
+                
+                // Add click handler to the link if suspicious
+                if (isSuspicious) {
+                    // Remove any existing click handlers
+                    link.removeEventListener('click', handleSuspiciousClick);
+                    // Add new click handler
+                    link.addEventListener('click', handleSuspiciousClick);
+                }
             });
             break;
         }
     }
+}
+
+// Separate function for handling suspicious clicks
+function handleSuspiciousClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = this.href;
+    const popup = createWarningPopup(url);
+    document.body.appendChild(popup);
 }
 
 // Add CSS styles to the page
@@ -213,7 +264,7 @@ function addStyles() {
             margin-left: 8px;
             line-height: 1.4;
             transition: all 0.2s ease;
-            cursor: default;
+            cursor: pointer;
             user-select: none;
         }
         
@@ -232,6 +283,83 @@ function addStyles() {
         .url-status-chip:hover {
             opacity: 0.9;
             transform: translateY(-1px);
+        }
+        
+        /* Warning popup styles */
+        .warning-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .warning-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .warning-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .warning-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .warning-header h3 {
+            margin: 0;
+            color: #d93025;
+        }
+        
+        .warning-content p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .warning-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .warning-buttons button {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .continue-btn {
+            background-color: #1a73e8;
+            color: white;
+        }
+        
+        .continue-btn:hover {
+            background-color: #1557b0;
+        }
+        
+        .cancel-btn {
+            background-color: #f1f3f4;
+            color: #3c4043;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e8eaed;
         }
         
         /* Ensure proper spacing in Google's search results */
