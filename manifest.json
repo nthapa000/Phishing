@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "My First Extension",
+  "name": "Search Result Scraper",
   "version": "1.0",
-  "description": "A simple browser extension to learn extension development",
+  "description": "Extracts the first 10 URLs from Google search results.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -11,5 +11,20 @@
       "128": "images/icon128.png"
     }
   },
-  "permissions": []
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/search*"],
+      "js": ["content.js"]
+    }
+  ]
 } 

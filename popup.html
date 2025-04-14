@@ -1,31 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My First Extension</title>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-      font-family: Arial, sans-serif;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results with Phishing Detection</title>
+    <style>
+        body {
+            width: 350px;
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 0;
+        }
+        h3 {
+            text-align: center;
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 18px;
+        }
+        .url-container {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border-left: 4px solid transparent;
+        }
+        li.suspicious {
+            border-left: 4px solid #ff4444;
+            background: #fff5f5;
+        }
+        li:hover {
+            background: #e0f7fa;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: 500;
+            display: block;
+            word-break: break-all;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+        .warning {
+            color: #ff4444;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .no-results {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-style: italic;
+        }
+        .stats {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-  <h2>My First Extension</h2>
-  <p>Welcome to your first browser extension!</p>
-  <button id="clickMe">Click Me!</button>
-  <script src="popup.js"></script>
+    <h3>Search Results with Phishing Detection</h3>
+    <div class="url-container">
+        <ul id="urlList"></ul>
+    </div>
+    <div class="stats" id="stats"></div>
+    <script src="popup.js"></script>
 </body>
 </html> 
